@@ -118,7 +118,7 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/generator/paper/list'),
+          url: this.$http.adornUrl('/admin/paper/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,

@@ -131,10 +131,13 @@ function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
         route['name'] = `i-${menuList[i].menuId}`
         route['meta']['iframeUrl'] = menuList[i].url
       } else {
+        console.log('test')
+        console.log(menuList[i].url)
         try {
           route['component'] = _import(`modules/${menuList[i].url}`) || null
         } catch (e) {}
       }
+
       routes.push(route)
     }
   }

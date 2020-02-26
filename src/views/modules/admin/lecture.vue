@@ -130,7 +130,7 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/generator/lecture/list'),
+          url: this.$http.adornUrl('/admin/lecture/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
