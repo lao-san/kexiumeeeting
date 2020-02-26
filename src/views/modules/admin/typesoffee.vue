@@ -6,8 +6,8 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('generator:typesoffee:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('generator:typesoffee:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button v-if="isAuth('admin:typesoffee:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('admin:typesoffee:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -112,7 +112,7 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/generator/typesoffee/list'),
+          url: this.$http.adornUrl('/admin/typesoffee/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -163,7 +163,7 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/generator/typesoffee/delete'),
+            url: this.$http.adornUrl('/admin/typesoffee/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {
