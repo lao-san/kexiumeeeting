@@ -2,13 +2,12 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.key" placeholder="请输入投稿题目/投稿人" clearable></el-input>
+        <el-input v-model="dataForm.key" placeholder="账号名或姓名" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('admin:paper:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('admin:paper:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
-        <el-button v-if="isAuth('admin:paperrequire:update')" type="primary" @click="addOrUpdateHandle()">添加投稿要求</el-button>
+        <el-button v-if="isAuth('admin:member:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('admin:member:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -27,37 +26,65 @@
         prop="id"
         header-align="center"
         align="center"
-        label="论文id">
+        label="会员id (会员表)">
       </el-table-column>
       <el-table-column
-        prop="meetingId"
+        prop="username"
         header-align="center"
         align="center"
-        label="会议id">
+        label="用户名">
       </el-table-column>
       <el-table-column
-        prop="attenderId"
+        prop="truename"
         header-align="center"
         align="center"
-        label="投稿人id">
+        label="姓名">
       </el-table-column>
       <el-table-column
-        prop="title"
+        prop="organization"
         header-align="center"
         align="center"
-        label="论文题目">
+        label="所属机构">
       </el-table-column>
       <el-table-column
-        prop="summary"
+        prop="position"
         header-align="center"
         align="center"
-        label="摘要">
+        label="职位">
+      </el-table-column>
+      <el-table-column
+        prop="jobTitle"
+        header-align="center"
+        align="center"
+        label="职称">
+      </el-table-column>
+      <el-table-column
+        prop="phone"
+        header-align="center"
+        align="center"
+        label="电话">
+      </el-table-column>
+      <el-table-column
+        prop="email"
+        header-align="center"
+        align="center"
+        label="邮箱">
       </el-table-column>
       <el-table-column
         prop="createTime"
         header-align="center"
         align="center"
         label="创建时间">
+      </el-table-column>
+      <el-table-column
+        prop="isCheck"
+        header-align="center"
+        align="center"
+        label="是否通过审核">
+        <template slot-scope="scope">
+          <el-button v-if="scope.row.isCheck === 0" size="medium" hit="true" @click="changeStatus(1,scope.row.id)">否</el-button>
+          <el-button v-else-if="scope.row.isCheck === 1" size="medium"  hit="true" type="success"  @click="changeStatus(0,scope.row.id)">是</el-button>
+        </template>
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -86,7 +113,7 @@
 </template>
 
 <script>
-  import AddOrUpdate from './paper-add-or-update'
+  import AddOrUpdate from './member-add-or-update'
   export default {
     data () {
       return {
@@ -94,6 +121,7 @@
           key: ''
         },
         dataList: [],
+        baa: true,
         pageIndex: 1,
         pageSize: 10,
         totalPage: 0,
@@ -113,7 +141,7 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/admin/paper/list'),
+          url: this.$http.adornUrl('/admin/member/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -164,7 +192,7 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/admin/paper/delete'),
+            url: this.$http.adornUrl('/admin/member/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {
@@ -181,6 +209,37 @@
               this.$message.error(data.msg)
             }
           })
+        })
+      },
+      // 改变审核状态
+      changeStatus (status, id) {
+        this.$http({
+          url: this.$http.adornUrl('/admin/member/status'),
+          method: 'post',
+          data: this.$http.adornData({
+            'id': id,
+            'status': status
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              duration: 500,
+              onClose: () => {
+                // this.getDataList()
+                var dList = this.dataList
+                dList.forEach(element => {
+                  if (element.id === id) {
+                    element.isCheck = status
+                  }
+                })
+                this.dataList = dList
+              }
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
         })
       }
     }
