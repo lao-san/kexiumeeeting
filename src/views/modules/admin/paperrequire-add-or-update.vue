@@ -4,14 +4,11 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="会议id" prop="meetingId">
-      <el-input v-model="dataForm.meetingId" placeholder="会议id"></el-input>
-    </el-form-item>
     <el-form-item label="截止时间" prop="deadline">
       <el-input v-model="dataForm.deadline" placeholder="截止时间"></el-input>
     </el-form-item>
-    <el-form-item label="要求" prop="name">
-      <el-input v-model="dataForm.name" placeholder="要求"></el-input>
+    <el-form-item label="要求" prop="content">
+      <el-input v-model="dataForm.content" placeholder="要求"></el-input>
     </el-form-item>
     <el-form-item label="创建时间" prop="createTime">
       <el-input v-model="dataForm.createTime" placeholder="创建时间"></el-input>
@@ -34,20 +31,16 @@
         visible: false,
         dataForm: {
           id: 0,
-          meetingId: '',
           deadline: '',
-          name: '',
+          content: '',
           createTime: '',
           isDel: ''
         },
         dataRule: {
-          meetingId: [
-            { required: true, message: '会议id不能为空', trigger: 'blur' }
-          ],
           deadline: [
             { required: true, message: '截止时间不能为空', trigger: 'blur' }
           ],
-          name: [
+          content: [
             { required: true, message: '要求不能为空', trigger: 'blur' }
           ],
           createTime: [
@@ -67,14 +60,13 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.id) {
             this.$http({
-              url: this.$http.adornUrl(`/admin/paperrequire/info/${this.dataForm.id}`),
+              url: this.$http.adornUrl(`/generator/paperrequire/info/${this.dataForm.id}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.code === 0) {
-                this.dataForm.meetingId = data.paperRequire.meetingId
                 this.dataForm.deadline = data.paperRequire.deadline
-                this.dataForm.name = data.paperRequire.name
+                this.dataForm.content = data.paperRequire.content
                 this.dataForm.createTime = data.paperRequire.createTime
                 this.dataForm.isDel = data.paperRequire.isDel
               }
@@ -87,13 +79,12 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/admin/paperrequire/${!this.dataForm.id ? 'save' : 'update'}`),
+              url: this.$http.adornUrl(`/generator/paperrequire/${!this.dataForm.id ? 'save' : 'update'}`),
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
-                'meetingId': this.dataForm.meetingId,
                 'deadline': this.dataForm.deadline,
-                'name': this.dataForm.name,
+                'content': this.dataForm.content,
                 'createTime': this.dataForm.createTime,
                 'isDel': this.dataForm.isDel
               })
