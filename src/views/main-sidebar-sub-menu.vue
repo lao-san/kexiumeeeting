@@ -7,12 +7,15 @@
       <icon-svg :name="menu.icon || ''" class="site-sidebar__menu-icon"></icon-svg>
       <span>{{ menu.name }}</span>
     </template>
-    <sub-menu
-      v-for="item in menu.list" 
-      :key="item.menuId"
-      :menu="item"
-      :dynamicMenuRoutes="dynamicMenuRoutes">
+    <template v-for="item in menu.list">
+      <sub-menu
+        :key="item.menuId"
+        :menu="item"
+        :dynamicMenuRoutes="dynamicMenuRoutes"
+        v-if="item.me!=0 || meetingId!=0"  
+      >
     </sub-menu>
+    </template>
   </el-submenu>
   <el-menu-item v-else :index="menu.menuId + ''" @click="gotoRouteHandle(menu)">
     <icon-svg :name="menu.icon || ''" class="site-sidebar__menu-icon"></icon-svg>
@@ -23,6 +26,11 @@
 <script>
   import SubMenu from './main-sidebar-sub-menu'
   export default {
+    data () {
+      return {
+        meetingId: 0
+      }
+    },
     name: 'sub-menu',
     props: {
       menu: {
@@ -42,12 +50,21 @@
         get () { return this.$store.state.common.sidebarLayoutSkin }
       }
     },
+    watch: {
+      '$route' (to, from) {
+        // 对路由变化作出响应...
+        // console.log(this.$route.params)
+        this.meetingId = this.$route.params.hasOwnProperty('id') ? this.$route.params.id :0
+        console.log(this.meetingId)
+      }
+    },
     methods: {
       // 通过menuId与动态(菜单)路由进行匹配跳转至指定路由
       gotoRouteHandle (menu) {
         var route = this.dynamicMenuRoutes.filter(item => item.meta.menuId === menu.menuId)
+        let mid = this.$route.params.hasOwnProperty('id') ? this.$route.params.id : 0
         if (route.length >= 1) {
-          this.$router.push({ name: route[0].name })
+          this.$router.push({ name: route[0].name, params: { id: mid } })
         }
       }
     }

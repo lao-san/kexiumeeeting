@@ -36,8 +36,7 @@ const mainRoutes = {
     { path: '/home', component: _import('common/home'), name: 'home', meta: { title: '首页' } },
     { path: '/theme', component: _import('common/theme'), name: 'theme', meta: { title: '主题' } },
     { path: '/demo-echarts', component: _import('demo/echarts'), name: 'demo-echarts', meta: { title: 'demo-echarts', isTab: true } },
-    { path: '/demo-ueditor', component: _import('demo/ueditor'), name: 'demo-ueditor', meta: { title: 'demo-ueditor', isTab: true } },
-    { path: '/home2', component: _import('modules/admin/home2'), name: 'home2', meta: { title: '企业平台首页' } }
+    { path: '/demo-ueditor', component: _import('demo/ueditor'), name: 'demo-ueditor', meta: { title: 'demo-ueditor', isTab: true } }
   ],
   beforeEnter (to, from, next) {
     let token = Vue.cookie.get('token')
@@ -64,12 +63,14 @@ router.beforeEach((to, from, next) => {
     next()
   } else {
     http({
-      url: http.adornUrl('/sys/menu/nav'),
+      // url: http.adornUrl('/sys/menu/nav'),
+      url: http.adornUrl('/admin/adminmenu/nav'),
       method: 'get',
       params: http.adornParams()
     }).then(({data}) => {
       if (data && data.code === 0) {
-        fnAddDynamicMenuRoutes(data.menuList)
+        // fnAddDynamicMenuRoutes(data.menuList)
+        fnAddDynamicMenuRoutesMy(data.menuList)
         router.options.isAddDynamicMenuRoutes = true
         sessionStorage.setItem('menuList', JSON.stringify(data.menuList || '[]'))
         sessionStorage.setItem('permissions', JSON.stringify(data.permissions || '[]'))
@@ -107,7 +108,62 @@ function fnCurrentRouteType (route, globalRoutes = []) {
  * @param {*} menuList 菜单列表
  * @param {*} routes 递归创建的动态(菜单)路由
  */
-function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
+// function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
+//   var temp = []
+//   for (var i = 0; i < menuList.length; i++) {
+//     if (menuList[i].list && menuList[i].list.length >= 1) {
+//       temp = temp.concat(menuList[i].list)
+//     } else if (menuList[i].url && /\S/.test(menuList[i].url)) {
+//       menuList[i].url = menuList[i].url.replace(/^\//, '')
+//       var route = {
+//         path: menuList[i].url.replace('/', '-'),
+//         component: null,
+//         name: menuList[i].url.replace('/', '-'),
+//         meta: {
+//           menuId: menuList[i].menuId,
+//           title: menuList[i].name,
+//           isDynamic: true,
+//           isTab: true,
+//           iframeUrl: ''
+//         }
+//       }
+//       // url以http[s]://开头, 通过iframe展示
+//       if (isURL(menuList[i].url)) {
+//         route['path'] = `i-${menuList[i].menuId}`
+//         route['name'] = `i-${menuList[i].menuId}`
+//         route['meta']['iframeUrl'] = menuList[i].url
+//       } else {
+//         try {
+//           route['component'] = _import(`modules/${menuList[i].url}`) || null
+//         } catch (e) {}
+//       }
+
+//       routes.push(route)
+//     }
+//   }
+//   if (temp.length >= 1) {
+//     fnAddDynamicMenuRoutes(temp, routes)
+//   } else {
+//     mainRoutes.name = 'main-dynamic'
+//     mainRoutes.children = routes
+//     router.addRoutes([
+//       mainRoutes,
+//       { path: '*', redirect: { name: '404' } }
+//     ])
+//     sessionStorage.setItem('dynamicMenuRoutes', JSON.stringify(mainRoutes.children || '[]'))
+//     console.log('\n')
+//     console.log('%c!<-------------------- 动态(菜单)路由 s -------------------->', 'color:blue')
+//     console.log(mainRoutes.children)
+//     console.log('%c!<-------------------- 动态(菜单)路由 e -------------------->', 'color:blue')
+//   }
+// }
+
+/**
+ * 2020-03-11 修改动态路由
+ * @param {*} menuList 菜单列表
+ * @param {*} routes 递归创建的动态(菜单)路由
+ */
+function fnAddDynamicMenuRoutesMy (menuList = [], routes = []) {
   var temp = []
   for (var i = 0; i < menuList.length; i++) {
     if (menuList[i].list && menuList[i].list.length >= 1) {
@@ -115,14 +171,14 @@ function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
     } else if (menuList[i].url && /\S/.test(menuList[i].url)) {
       menuList[i].url = menuList[i].url.replace(/^\//, '')
       var route = {
-        path: menuList[i].url.replace('/', '-'),
+        path: addMeetingId(menuList[i].url.replace('/', '-'), menuList[i].parentId),
         component: null,
-        name: menuList[i].url.replace('/', '-'),
+        name: addMeetingId(menuList[i].url.replace('/', '-'), menuList[i].parentId),
         meta: {
           menuId: menuList[i].menuId,
           title: menuList[i].name,
           isDynamic: true,
-          isTab: true,
+          isTab: menuList[i].isTab,
           iframeUrl: ''
         }
       }
@@ -141,7 +197,7 @@ function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
     }
   }
   if (temp.length >= 1) {
-    fnAddDynamicMenuRoutes(temp, routes)
+    fnAddDynamicMenuRoutesMy(temp, routes)
   } else {
     mainRoutes.name = 'main-dynamic'
     mainRoutes.children = routes
@@ -155,6 +211,14 @@ function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
     console.log(mainRoutes.children)
     console.log('%c!<-------------------- 动态(菜单)路由 e -------------------->', 'color:blue')
   }
+}
+
+function addMeetingId (url, parentId) {
+  // console.log(url)
+  if (parentId === 76) {
+    url += '/:id'
+  }
+  return url
 }
 
 export default router

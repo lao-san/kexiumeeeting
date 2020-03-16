@@ -24,7 +24,8 @@ ul li {
       </el-col>
       <ul>
         <template v-for="item in dataList">
-          <li :key="item.id" v-if="!item.isCheck" @click="routerTo(item.id)">
+          <li :key="item.id" v-if="!item.isCheck">
+            <router-link to="/">
               <el-col :span="6">
                 <div class="grid-content bg-purple-dark">
                   <img src="/static/img/huiyiim.jpg" alt="会议图片" />
@@ -35,6 +36,7 @@ ul li {
                   </div>
                 </div>
               </el-col>
+            </router-link>
           </li>
         </template>
       </ul>
@@ -49,7 +51,8 @@ ul li {
     <el-row>
       <ul>
         <template v-for="item in dataList">
-          <li :key="item.id" v-if="item.isCheck == 1" @click="routerTo(item.id)">
+          <li :key="item.id" v-if="!item.isCheck == 1">
+            <router-link to="/">
               <el-col :span="6">
                 <div class="grid-content bg-purple-dark">
                   <img src="/static/img/huiyiim.jpg" alt="会议图片" />
@@ -60,6 +63,7 @@ ul li {
                   </div>
                 </div>
               </el-col>
+            </router-link>
           </li>
         </template>
       </ul>
@@ -74,7 +78,8 @@ ul li {
     <el-row>
       <ul>
         <template v-for="item in dataList">
-          <li :key="item.id" v-if="item.isCheck == 2" @click="routerTo(item.id)">
+          <li :key="item.id" v-if="!item.isCheck == 2">
+            <router-link to="/">
               <el-col :span="6">
                 <div class="grid-content bg-purple-dark">
                   <img src="/static/img/huiyiim.jpg" alt="会议图片" />
@@ -85,6 +90,7 @@ ul li {
                   </div>
                 </div>
               </el-col>
+            </router-link>
           </li>
         </template>
       </ul>
@@ -96,7 +102,7 @@ ul li {
 </template>
 
 <script>
-import AddOrUpdate from '../modules/admin/meeting-add-or-update'
+import AddOrUpdate from './meeting-add-or-update'
 export default {
   data () {
     return {
@@ -116,13 +122,9 @@ export default {
     AddOrUpdate
   },
   activated () {
-    this.meetingMenuId = 0
     this.getDataList()
   },
   methods: {
-    routerTo (mid) {
-      this.$router.push({ name: 'admin-meeting/:id', params: { id: mid } })
-    },
     // 获取数据列表
     getDataList () {
       this.dataListLoading = true

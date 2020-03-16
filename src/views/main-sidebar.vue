@@ -24,10 +24,6 @@
             <span slot="title">ueditor</span>
           </el-menu-item>
         </el-submenu>
-         <el-menu-item index="home2" @click="$router.push({ name: 'home2' })">
-          <icon-svg name="shouye" class="site-sidebar__menu-icon"></icon-svg>
-          <span slot="title">企业平台首页</span>
-        </el-menu-item>
         <sub-menu
           v-for="menu in menuList"
           :key="menu.menuId"
