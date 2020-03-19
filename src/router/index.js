@@ -171,14 +171,14 @@ function fnAddDynamicMenuRoutesMy (menuList = [], routes = []) {
     } else if (menuList[i].url && /\S/.test(menuList[i].url)) {
       menuList[i].url = menuList[i].url.replace(/^\//, '')
       var route = {
-        path: addMeetingId(menuList[i].url.replace('/', '-'), menuList[i].parentId),
+        path: addMeetingId(menuList[i].url.replace('/', '-'), menuList[i].me),
         component: null,
-        name: addMeetingId(menuList[i].url.replace('/', '-'), menuList[i].parentId),
+        name: addMeetingId(menuList[i].url.replace('/', '-'), menuList[i].me),
         meta: {
           menuId: menuList[i].menuId,
           title: menuList[i].name,
           isDynamic: true,
-          isTab: menuList[i].isTab,
+          isTab: false,
           iframeUrl: ''
         }
       }
@@ -213,9 +213,9 @@ function fnAddDynamicMenuRoutesMy (menuList = [], routes = []) {
   }
 }
 
-function addMeetingId (url, parentId) {
+function addMeetingId (url, me) {
   // console.log(url)
-  if (parentId === 76) {
+  if (me === 1) {
     url += '/:id'
   }
   return url

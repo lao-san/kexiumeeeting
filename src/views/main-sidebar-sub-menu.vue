@@ -12,7 +12,6 @@
         :key="item.menuId"
         :menu="item"
         :dynamicMenuRoutes="dynamicMenuRoutes"
-        v-if="item.me!=0 || meetingId!=0"  
       >
     </sub-menu>
     </template>
@@ -26,11 +25,6 @@
 <script>
   import SubMenu from './main-sidebar-sub-menu'
   export default {
-    data () {
-      return {
-        meetingId: 0
-      }
-    },
     name: 'sub-menu',
     props: {
       menu: {
@@ -48,14 +42,6 @@
     computed: {
       sidebarLayoutSkin: {
         get () { return this.$store.state.common.sidebarLayoutSkin }
-      }
-    },
-    watch: {
-      '$route' (to, from) {
-        // 对路由变化作出响应...
-        // console.log(this.$route.params)
-        this.meetingId = this.$route.params.hasOwnProperty('id') ? this.$route.params.id :0
-        console.log(this.meetingId)
       }
     },
     methods: {

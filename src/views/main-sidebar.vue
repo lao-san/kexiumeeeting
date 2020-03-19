@@ -28,7 +28,8 @@
           v-for="menu in menuList"
           :key="menu.menuId"
           :menu="menu"
-          :dynamicMenuRoutes="dynamicMenuRoutes">
+          :dynamicMenuRoutes="dynamicMenuRoutes"
+          :meetindId="meetingId">
         </sub-menu>
       </el-menu>
     </div>
@@ -41,7 +42,8 @@
   export default {
     data () {
       return {
-        dynamicMenuRoutes: []
+        dynamicMenuRoutes: [],
+        meetingId: 0
       }
     },
     components: {
@@ -73,15 +75,49 @@
     },
     watch: {
       $route: 'routeHandle'
+      // '$route' (to, from) {
+      //   // 对路由变化作出响应...
+      //   // console.log(this.$route.params)
+      //   this.meetingId = this.$route.params.hasOwnProperty('id') ? this.$route.params.id : 0
+      //   console.log(this.meetingId)
+      // }
     },
     created () {
-      this.menuList = JSON.parse(sessionStorage.getItem('menuList') || '[]')
+      // console.log(JSON.parse(sessionStorage.getItem('menuList') || '[]'))
+      let mList = JSON.parse(sessionStorage.getItem('menuList') || '[]')
+      let myList = []
+      mList.forEach(element => {
+        if (element.me === 0) {
+          myList.push(element)
+        }
+      })
+      // this.menuList = JSON.parse(sessionStorage.getItem('menuList') || '[]')
+      this.menuList = myList
       this.dynamicMenuRoutes = JSON.parse(sessionStorage.getItem('dynamicMenuRoutes') || '[]')
+      console.log(this.$route)
       this.routeHandle(this.$route)
     },
     methods: {
       // 路由操作
       routeHandle (route) {
+        console.log(this.meetingId + '103')
+        this.meetingId = this.$route.params.hasOwnProperty('id') ? this.$route.params.id : 0
+        console.log(this.meetingId + '105')
+        if (this.meetingId !== 0) {
+          this.menuList = JSON.parse(sessionStorage.getItem('menuList') || '[]')
+          console.log(this.menuList)
+        } else {
+          let mList = JSON.parse(sessionStorage.getItem('menuList') || '[]')
+          let myList = []
+          mList.forEach(element => {
+            if (element.me === 0) {
+              myList.push(element)
+            }
+          })
+          console.log(myList)
+          // this.menuList = JSON.parse(sessionStorage.getItem('menuList') || '[]')
+          this.menuList = myList
+        }
         if (route.meta.isTab) {
           // tab选中, 不存在先添加
           var tab = this.mainTabs.filter(item => item.name === route.name)[0]
