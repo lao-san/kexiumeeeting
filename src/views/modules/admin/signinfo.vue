@@ -6,8 +6,8 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('generator:signinfo:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('generator:signinfo:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button v-if="isAuth('admin:signinfo:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('admin:signinfo:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -77,6 +77,12 @@
         label="参会人员类型id">
       </el-table-column>
       <el-table-column
+        prop="typeAttenders"
+        header-align="center"
+        align="center"
+        label="">
+      </el-table-column>
+      <el-table-column
         prop="servicer"
         header-align="center"
         align="center"
@@ -111,6 +117,24 @@
         header-align="center"
         align="center"
         label="最后签到时间">
+      </el-table-column>
+      <el-table-column
+        prop="note"
+        header-align="center"
+        align="center"
+        label="备注">
+      </el-table-column>
+      <el-table-column
+        prop="regflag"
+        header-align="center"
+        align="center"
+        label="注册情况 0, 1, 2, 现场注册">
+      </el-table-column>
+      <el-table-column
+        prop="createTime"
+        header-align="center"
+        align="center"
+        label="创建时间">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -166,7 +190,7 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/generator/signinfo/list'),
+          url: this.$http.adornUrl('/admin/signinfo/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -217,7 +241,7 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/generator/signinfo/delete'),
+            url: this.$http.adornUrl('/admin/signinfo/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {

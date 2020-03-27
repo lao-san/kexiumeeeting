@@ -95,7 +95,7 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.menuId) {
             this.$http({
-              url: this.$http.adornUrl(`/generator/adminmenu/info/${this.dataForm.menuId}`),
+              url: this.$http.adornUrl(`/admin/adminmenu/info/${this.dataForm.menuId}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
@@ -119,7 +119,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/generator/adminmenu/${!this.dataForm.menuId ? 'save' : 'update'}`),
+              url: this.$http.adornUrl(`/admin/adminmenu/${!this.dataForm.menuId ? 'save' : 'update'}`),
               method: 'post',
               data: this.$http.adornData({
                 'menuId': this.dataForm.menuId || undefined,

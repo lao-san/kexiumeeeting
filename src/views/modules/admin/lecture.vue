@@ -35,10 +35,10 @@
         label="会议id">
       </el-table-column>
       <el-table-column
-        prop="speaker"
+        prop="attendersId"
         header-align="center"
         align="center"
-        label="演讲人id">
+        label="参会人员id">
       </el-table-column>
       <el-table-column
         prop="topic"

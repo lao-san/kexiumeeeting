@@ -28,6 +28,9 @@
     <el-form-item label="参会人员类型id" prop="typeId">
       <el-input v-model="dataForm.typeId" placeholder="参会人员类型id"></el-input>
     </el-form-item>
+    <el-form-item label="" prop="typeAttenders">
+      <el-input v-model="dataForm.typeAttenders" placeholder=""></el-input>
+    </el-form-item>
     <el-form-item label="负责人（员工id）" prop="servicer">
       <el-input v-model="dataForm.servicer" placeholder="负责人（员工id）"></el-input>
     </el-form-item>
@@ -45,6 +48,15 @@
     </el-form-item>
     <el-form-item label="最后签到时间" prop="lastTime">
       <el-input v-model="dataForm.lastTime" placeholder="最后签到时间"></el-input>
+    </el-form-item>
+    <el-form-item label="备注" prop="note">
+      <el-input v-model="dataForm.note" placeholder="备注"></el-input>
+    </el-form-item>
+    <el-form-item label="注册情况 0, 1, 2, 现场注册" prop="regflag">
+      <el-input v-model="dataForm.regflag" placeholder="注册情况 0, 1, 2, 现场注册"></el-input>
+    </el-form-item>
+    <el-form-item label="创建时间" prop="createTime">
+      <el-input v-model="dataForm.createTime" placeholder="创建时间"></el-input>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -69,12 +81,16 @@
           jobTitle: '',
           phone: '',
           typeId: '',
+          typeAttenders: '',
           servicer: '',
           servername: '',
           isPay: '',
           status: '',
           badge: '',
-          lastTime: ''
+          lastTime: '',
+          note: '',
+          regflag: '',
+          createTime: ''
         },
         dataRule: {
           aId: [
@@ -101,6 +117,9 @@
           typeId: [
             { required: true, message: '参会人员类型id不能为空', trigger: 'blur' }
           ],
+          typeAttenders: [
+            { required: true, message: '不能为空', trigger: 'blur' }
+          ],
           servicer: [
             { required: true, message: '负责人（员工id）不能为空', trigger: 'blur' }
           ],
@@ -118,6 +137,15 @@
           ],
           lastTime: [
             { required: true, message: '最后签到时间不能为空', trigger: 'blur' }
+          ],
+          note: [
+            { required: true, message: '备注不能为空', trigger: 'blur' }
+          ],
+          regflag: [
+            { required: true, message: '注册情况 0, 1, 2, 现场注册不能为空', trigger: 'blur' }
+          ],
+          createTime: [
+            { required: true, message: '创建时间不能为空', trigger: 'blur' }
           ]
         }
       }
@@ -130,7 +158,7 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.id) {
             this.$http({
-              url: this.$http.adornUrl(`/generator/signinfo/info/${this.dataForm.id}`),
+              url: this.$http.adornUrl(`/admin/signinfo/info/${this.dataForm.id}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
@@ -143,12 +171,16 @@
                 this.dataForm.jobTitle = data.signInfo.jobTitle
                 this.dataForm.phone = data.signInfo.phone
                 this.dataForm.typeId = data.signInfo.typeId
+                this.dataForm.typeAttenders = data.signInfo.typeAttenders
                 this.dataForm.servicer = data.signInfo.servicer
                 this.dataForm.servername = data.signInfo.servername
                 this.dataForm.isPay = data.signInfo.isPay
                 this.dataForm.status = data.signInfo.status
                 this.dataForm.badge = data.signInfo.badge
                 this.dataForm.lastTime = data.signInfo.lastTime
+                this.dataForm.note = data.signInfo.note
+                this.dataForm.regflag = data.signInfo.regflag
+                this.dataForm.createTime = data.signInfo.createTime
               }
             })
           }
@@ -159,7 +191,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/generator/signinfo/${!this.dataForm.id ? 'save' : 'update'}`),
+              url: this.$http.adornUrl(`/admin/signinfo/${!this.dataForm.id ? 'save' : 'update'}`),
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
@@ -171,12 +203,16 @@
                 'jobTitle': this.dataForm.jobTitle,
                 'phone': this.dataForm.phone,
                 'typeId': this.dataForm.typeId,
+                'typeAttenders': this.dataForm.typeAttenders,
                 'servicer': this.dataForm.servicer,
                 'servername': this.dataForm.servername,
                 'isPay': this.dataForm.isPay,
                 'status': this.dataForm.status,
                 'badge': this.dataForm.badge,
-                'lastTime': this.dataForm.lastTime
+                'lastTime': this.dataForm.lastTime,
+                'note': this.dataForm.note,
+                'regflag': this.dataForm.regflag,
+                'createTime': this.dataForm.createTime
               })
             }).then(({data}) => {
               if (data && data.code === 0) {

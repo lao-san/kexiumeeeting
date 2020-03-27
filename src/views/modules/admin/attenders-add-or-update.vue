@@ -55,6 +55,9 @@
     <el-form-item label="联系邮箱" prop="emailLx">
       <el-input v-model="dataForm.emailLx" placeholder="联系邮箱"></el-input>
     </el-form-item>
+    <el-form-item label="注册情况 0, 1, 2, 现场注册" prop="regflag">
+      <el-input v-model="dataForm.regflag" placeholder="注册情况 0, 1, 2, 现场注册"></el-input>
+    </el-form-item>
     <el-form-item label="创建时间" prop="createTime">
       <el-input v-model="dataForm.createTime" placeholder="创建时间"></el-input>
     </el-form-item>
@@ -102,6 +105,7 @@
           note: '',
           account: '',
           emailLx: '',
+          regflag: '',
           createTime: '',
           modifyTime: '',
           creater: '',
@@ -160,6 +164,9 @@
           emailLx: [
             { required: true, message: '联系邮箱不能为空', trigger: 'blur' }
           ],
+          regflag: [
+            { required: true, message: '注册情况 0, 1, 2, 现场注册不能为空', trigger: 'blur' }
+          ],
           createTime: [
             { required: true, message: '创建时间不能为空', trigger: 'blur' }
           ],
@@ -208,6 +215,7 @@
                 this.dataForm.note = data.attenders.note
                 this.dataForm.account = data.attenders.account
                 this.dataForm.emailLx = data.attenders.emailLx
+                this.dataForm.regflag = data.attenders.regflag
                 this.dataForm.createTime = data.attenders.createTime
                 this.dataForm.modifyTime = data.attenders.modifyTime
                 this.dataForm.creater = data.attenders.creater
@@ -244,6 +252,7 @@
                 'note': this.dataForm.note,
                 'account': this.dataForm.account,
                 'emailLx': this.dataForm.emailLx,
+                'regflag': this.dataForm.regflag,
                 'createTime': this.dataForm.createTime,
                 'modifyTime': this.dataForm.modifyTime,
                 'creater': this.dataForm.creater,

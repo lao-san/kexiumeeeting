@@ -131,6 +131,12 @@
         label="联系邮箱">
       </el-table-column>
       <el-table-column
+        prop="regflag"
+        header-align="center"
+        align="center"
+        label="注册情况 0, 1, 2, 现场注册">
+      </el-table-column>
+      <el-table-column
         prop="createTime"
         header-align="center"
         align="center"

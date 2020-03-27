@@ -2,13 +2,12 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.key" placeholder="请输入投稿题目/投稿人" clearable></el-input>
+        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
         <el-button v-if="isAuth('admin:paper:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
         <el-button v-if="isAuth('admin:paper:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
-        <el-button v-if="isAuth('admin:paperrequire:update')" type="primary" @click="addOrUpdateHandle()">添加投稿要求</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -33,13 +32,13 @@
         prop="meetingId"
         header-align="center"
         align="center"
-        label="会议id">
+        label="会员id">
       </el-table-column>
       <el-table-column
-        prop="attenderId"
+        prop="attendersId"
         header-align="center"
         align="center"
-        label="投稿人id">
+        label="参会人员id">
       </el-table-column>
       <el-table-column
         prop="title"
@@ -54,10 +53,22 @@
         label="摘要">
       </el-table-column>
       <el-table-column
+        prop="paperurl"
+        header-align="center"
+        align="center"
+        label="论文存放地址">
+      </el-table-column>
+      <el-table-column
         prop="createTime"
         header-align="center"
         align="center"
         label="创建时间">
+      </el-table-column>
+      <el-table-column
+        prop="isDel"
+        header-align="center"
+        align="center"
+        label="是否被删除 状态  0：正常   1：删除">
       </el-table-column>
       <el-table-column
         fixed="right"

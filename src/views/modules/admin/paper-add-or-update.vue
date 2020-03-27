@@ -7,14 +7,17 @@
     <el-form-item label="会员id" prop="meetingId">
       <el-input v-model="dataForm.meetingId" placeholder="会员id"></el-input>
     </el-form-item>
-    <el-form-item label="投稿人id" prop="attenderId">
-      <el-input v-model="dataForm.attenderId" placeholder="投稿人id"></el-input>
+    <el-form-item label="参会人员id" prop="attendersId">
+      <el-input v-model="dataForm.attendersId" placeholder="参会人员id"></el-input>
     </el-form-item>
     <el-form-item label="论文题目" prop="title">
       <el-input v-model="dataForm.title" placeholder="论文题目"></el-input>
     </el-form-item>
     <el-form-item label="摘要" prop="summary">
       <el-input v-model="dataForm.summary" placeholder="摘要"></el-input>
+    </el-form-item>
+    <el-form-item label="论文存放地址" prop="paperurl">
+      <el-input v-model="dataForm.paperurl" placeholder="论文存放地址"></el-input>
     </el-form-item>
     <el-form-item label="创建时间" prop="createTime">
       <el-input v-model="dataForm.createTime" placeholder="创建时间"></el-input>
@@ -38,9 +41,10 @@
         dataForm: {
           id: 0,
           meetingId: '',
-          attenderId: '',
+          attendersId: '',
           title: '',
           summary: '',
+          paperurl: '',
           createTime: '',
           isDel: ''
         },
@@ -48,14 +52,17 @@
           meetingId: [
             { required: true, message: '会员id不能为空', trigger: 'blur' }
           ],
-          attenderId: [
-            { required: true, message: '投稿人id不能为空', trigger: 'blur' }
+          attendersId: [
+            { required: true, message: '参会人员id不能为空', trigger: 'blur' }
           ],
           title: [
             { required: true, message: '论文题目不能为空', trigger: 'blur' }
           ],
           summary: [
             { required: true, message: '摘要不能为空', trigger: 'blur' }
+          ],
+          paperurl: [
+            { required: true, message: '论文存放地址不能为空', trigger: 'blur' }
           ],
           createTime: [
             { required: true, message: '创建时间不能为空', trigger: 'blur' }
@@ -80,9 +87,10 @@
             }).then(({data}) => {
               if (data && data.code === 0) {
                 this.dataForm.meetingId = data.paper.meetingId
-                this.dataForm.attenderId = data.paper.attenderId
+                this.dataForm.attendersId = data.paper.attendersId
                 this.dataForm.title = data.paper.title
                 this.dataForm.summary = data.paper.summary
+                this.dataForm.paperurl = data.paper.paperurl
                 this.dataForm.createTime = data.paper.createTime
                 this.dataForm.isDel = data.paper.isDel
               }
@@ -100,9 +108,10 @@
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
                 'meetingId': this.dataForm.meetingId,
-                'attenderId': this.dataForm.attenderId,
+                'attendersId': this.dataForm.attendersId,
                 'title': this.dataForm.title,
                 'summary': this.dataForm.summary,
+                'paperurl': this.dataForm.paperurl,
                 'createTime': this.dataForm.createTime,
                 'isDel': this.dataForm.isDel
               })

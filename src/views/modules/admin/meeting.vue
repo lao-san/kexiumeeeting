@@ -89,6 +89,12 @@
         label="涉及行业">
       </el-table-column>
       <el-table-column
+        prop="attendersType"
+        header-align="center"
+        align="center"
+        label="参会人员类型">
+      </el-table-column>
+      <el-table-column
         prop="serviceEmp"
         header-align="center"
         align="center"
@@ -123,6 +129,12 @@
         header-align="center"
         align="center"
         label="会议介绍">
+      </el-table-column>
+      <el-table-column
+        prop="paperRequireId"
+        header-align="center"
+        align="center"
+        label="投稿要求id">
       </el-table-column>
       <el-table-column
         prop="createTime"

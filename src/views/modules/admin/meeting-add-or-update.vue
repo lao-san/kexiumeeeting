@@ -34,6 +34,9 @@
     <el-form-item label="涉及行业" prop="industries">
       <el-input v-model="dataForm.industries" placeholder="涉及行业"></el-input>
     </el-form-item>
+    <el-form-item label="参会人员类型" prop="attendersType">
+      <el-input v-model="dataForm.attendersType" placeholder="参会人员类型"></el-input>
+    </el-form-item>
     <el-form-item label="会议负责人" prop="serviceEmp">
       <el-input v-model="dataForm.serviceEmp" placeholder="会议负责人"></el-input>
     </el-form-item>
@@ -51,6 +54,9 @@
     </el-form-item>
     <el-form-item label="会议介绍" prop="introduction">
       <el-input v-model="dataForm.introduction" placeholder="会议介绍"></el-input>
+    </el-form-item>
+    <el-form-item label="投稿要求id" prop="paperRequireId">
+      <el-input v-model="dataForm.paperRequireId" placeholder="投稿要求id"></el-input>
     </el-form-item>
     <el-form-item label="创建时间" prop="createTime">
       <el-input v-model="dataForm.createTime" placeholder="创建时间"></el-input>
@@ -89,12 +95,14 @@
           titlePicture: '',
           subjects: '',
           industries: '',
+          attendersType: '',
           serviceEmp: '',
           onlineRegDeadline: '',
           onsiteRegDeadline: '',
           subDeadline: '',
           subRequirement: '',
           introduction: '',
+          paperRequireId: '',
           createTime: '',
           modifyTime: '',
           isCheck: '',
@@ -131,6 +139,9 @@
           industries: [
             { required: true, message: '涉及行业不能为空', trigger: 'blur' }
           ],
+          attendersType: [
+            { required: true, message: '参会人员类型不能为空', trigger: 'blur' }
+          ],
           serviceEmp: [
             { required: true, message: '会议负责人不能为空', trigger: 'blur' }
           ],
@@ -148,6 +159,9 @@
           ],
           introduction: [
             { required: true, message: '会议介绍不能为空', trigger: 'blur' }
+          ],
+          paperRequireId: [
+            { required: true, message: '投稿要求id不能为空', trigger: 'blur' }
           ],
           createTime: [
             { required: true, message: '创建时间不能为空', trigger: 'blur' }
@@ -187,12 +201,14 @@
                 this.dataForm.titlePicture = data.meeting.titlePicture
                 this.dataForm.subjects = data.meeting.subjects
                 this.dataForm.industries = data.meeting.industries
+                this.dataForm.attendersType = data.meeting.attendersType
                 this.dataForm.serviceEmp = data.meeting.serviceEmp
                 this.dataForm.onlineRegDeadline = data.meeting.onlineRegDeadline
                 this.dataForm.onsiteRegDeadline = data.meeting.onsiteRegDeadline
                 this.dataForm.subDeadline = data.meeting.subDeadline
                 this.dataForm.subRequirement = data.meeting.subRequirement
                 this.dataForm.introduction = data.meeting.introduction
+                this.dataForm.paperRequireId = data.meeting.paperRequireId
                 this.dataForm.createTime = data.meeting.createTime
                 this.dataForm.modifyTime = data.meeting.modifyTime
                 this.dataForm.isCheck = data.meeting.isCheck
@@ -221,12 +237,14 @@
                 'titlePicture': this.dataForm.titlePicture,
                 'subjects': this.dataForm.subjects,
                 'industries': this.dataForm.industries,
+                'attendersType': this.dataForm.attendersType,
                 'serviceEmp': this.dataForm.serviceEmp,
                 'onlineRegDeadline': this.dataForm.onlineRegDeadline,
                 'onsiteRegDeadline': this.dataForm.onsiteRegDeadline,
                 'subDeadline': this.dataForm.subDeadline,
                 'subRequirement': this.dataForm.subRequirement,
                 'introduction': this.dataForm.introduction,
+                'paperRequireId': this.dataForm.paperRequireId,
                 'createTime': this.dataForm.createTime,
                 'modifyTime': this.dataForm.modifyTime,
                 'isCheck': this.dataForm.isCheck,

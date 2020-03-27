@@ -7,25 +7,8 @@
     <el-form-item label="会议id" prop="meetingId">
       <el-input v-model="dataForm.meetingId" placeholder="会议id"></el-input>
     </el-form-item>
-    <el-form-item label="演讲人id" prop="attendersId">
-      <template>
-        <el-select
-          v-model="dataForm.attendersId"
-          filterable
-          remote
-          reserve-keyword
-          placeholder="请输入姓名"
-          :remote-method="selectAttendersIdByname"
-          :loading="loading">
-          <el-option
-            v-for="item in options"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id">
-          </el-option>
-        </el-select>
-      </template>
-      <!-- <el-input v-model="dataForm.attendersId" placeholder="演讲人id"></el-input> -->
+    <el-form-item label="参会人员id" prop="attendersId">
+      <el-input v-model="dataForm.attendersId" placeholder="参会人员id"></el-input>
     </el-form-item>
     <el-form-item label="题目" prop="topic">
       <el-input v-model="dataForm.topic" placeholder="题目"></el-input>
@@ -74,7 +57,7 @@
             { required: true, message: '会议id不能为空', trigger: 'blur' }
           ],
           attendersId: [
-            { required: true, message: '演讲人id不能为空', trigger: 'blur' }
+            { required: true, message: '参会人员id不能为空', trigger: 'blur' }
           ],
           topic: [
             { required: true, message: '题目不能为空', trigger: 'blur' }
@@ -87,16 +70,18 @@
           ],
           summary: [
             { required: true, message: '摘要不能为空', trigger: 'blur' }
+          ],
+          createTime: [
+            { required: true, message: '創建時間不能为空', trigger: 'blur' }
+          ],
+          isDel: [
+            { required: true, message: '是否被删除 状态  0：正常   1：删除不能为空', trigger: 'blur' }
           ]
-        },
-        options: [],
-        loading: false,
-        meetingId: 0
+        }
       }
     },
     methods: {
       init (id) {
-        this.meetingId = this.$route.params.id
         this.dataForm.id = id || 0
         this.visible = true
         this.$nextTick(() => {
@@ -154,23 +139,6 @@
                 this.$message.error(data.msg)
               }
             })
-          }
-        })
-      },
-      // 通过姓名模糊查询参会人员id
-      selectAttendersIdByname (name) {
-        this.loading = true
-        this.$http({
-          url: this.$http.adornUrl(`/admin/attenders/selectbyname`),
-          method: 'get',
-          params: this.$http.adornParams({
-            'name': name,
-            'meetingId': this.meetingId
-          })
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            this.loading = false
-            this.options = data.list
           }
         })
       }

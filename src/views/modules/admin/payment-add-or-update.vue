@@ -4,14 +4,14 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="订单编号" prop="orderId">
-      <el-input v-model="dataForm.orderId" placeholder="订单编号"></el-input>
+    <el-form-item label="订单号" prop="orderId">
+      <el-input v-model="dataForm.orderId" placeholder="订单号"></el-input>
     </el-form-item>
-    <el-form-item label="公司id" prop="companyId">
-      <el-input v-model="dataForm.companyId" placeholder="公司id"></el-input>
+    <el-form-item label="参会人员id" prop="attendersId">
+      <el-input v-model="dataForm.attendersId" placeholder="参会人员id"></el-input>
     </el-form-item>
-    <el-form-item label="参会人员id" prop="attenders">
-      <el-input v-model="dataForm.attenders" placeholder="参会人员id"></el-input>
+    <el-form-item label="费用类型id" prop="feeId">
+      <el-input v-model="dataForm.feeId" placeholder="费用类型id"></el-input>
     </el-form-item>
     <el-form-item label="缴费时间" prop="payTime">
       <el-input v-model="dataForm.payTime" placeholder="缴费时间"></el-input>
@@ -40,11 +40,20 @@
     <el-form-item label="邮寄地址" prop="taxAddress">
       <el-input v-model="dataForm.taxAddress" placeholder="邮寄地址"></el-input>
     </el-form-item>
+    <el-form-item label="确认是否已缴费" prop="isCheck">
+      <el-input v-model="dataForm.isCheck" placeholder="确认是否已缴费"></el-input>
+    </el-form-item>
     <el-form-item label="创建时间" prop="createTime">
       <el-input v-model="dataForm.createTime" placeholder="创建时间"></el-input>
     </el-form-item>
     <el-form-item label="是否被删除 状态  0：正常   1：删除" prop="isDel">
       <el-input v-model="dataForm.isDel" placeholder="是否被删除 状态  0：正常   1：删除"></el-input>
+    </el-form-item>
+    <el-form-item label="会议id" prop="meetingId">
+      <el-input v-model="dataForm.meetingId" placeholder="会议id"></el-input>
+    </el-form-item>
+    <el-form-item label="发票类型0普1专" prop="taxType">
+      <el-input v-model="dataForm.taxType" placeholder="发票类型0普1专"></el-input>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -62,8 +71,8 @@
         dataForm: {
           id: 0,
           orderId: '',
-          companyId: '',
-          attenders: '',
+          attendersId: '',
+          feeId: '',
           payTime: '',
           payType: '',
           payOption: '',
@@ -73,18 +82,21 @@
           addrPhone: '',
           bankAddrAccount: '',
           taxAddress: '',
+          isCheck: '',
           createTime: '',
-          isDel: ''
+          isDel: '',
+          meetingId: '',
+          taxType: ''
         },
         dataRule: {
           orderId: [
-            { required: true, message: '订单编号不能为空', trigger: 'blur' }
+            { required: true, message: '订单号不能为空', trigger: 'blur' }
           ],
-          companyId: [
-            { required: true, message: '公司id不能为空', trigger: 'blur' }
-          ],
-          attenders: [
+          attendersId: [
             { required: true, message: '参会人员id不能为空', trigger: 'blur' }
+          ],
+          feeId: [
+            { required: true, message: '费用类型id不能为空', trigger: 'blur' }
           ],
           payTime: [
             { required: true, message: '缴费时间不能为空', trigger: 'blur' }
@@ -113,11 +125,20 @@
           taxAddress: [
             { required: true, message: '邮寄地址不能为空', trigger: 'blur' }
           ],
+          isCheck: [
+            { required: true, message: '确认是否已缴费不能为空', trigger: 'blur' }
+          ],
           createTime: [
             { required: true, message: '创建时间不能为空', trigger: 'blur' }
           ],
           isDel: [
             { required: true, message: '是否被删除 状态  0：正常   1：删除不能为空', trigger: 'blur' }
+          ],
+          meetingId: [
+            { required: true, message: '会议id不能为空', trigger: 'blur' }
+          ],
+          taxType: [
+            { required: true, message: '发票类型0普1专不能为空', trigger: 'blur' }
           ]
         }
       }
@@ -136,8 +157,8 @@
             }).then(({data}) => {
               if (data && data.code === 0) {
                 this.dataForm.orderId = data.payment.orderId
-                this.dataForm.companyId = data.payment.companyId
-                this.dataForm.attenders = data.payment.attenders
+                this.dataForm.attendersId = data.payment.attendersId
+                this.dataForm.feeId = data.payment.feeId
                 this.dataForm.payTime = data.payment.payTime
                 this.dataForm.payType = data.payment.payType
                 this.dataForm.payOption = data.payment.payOption
@@ -147,8 +168,11 @@
                 this.dataForm.addrPhone = data.payment.addrPhone
                 this.dataForm.bankAddrAccount = data.payment.bankAddrAccount
                 this.dataForm.taxAddress = data.payment.taxAddress
+                this.dataForm.isCheck = data.payment.isCheck
                 this.dataForm.createTime = data.payment.createTime
                 this.dataForm.isDel = data.payment.isDel
+                this.dataForm.meetingId = data.payment.meetingId
+                this.dataForm.taxType = data.payment.taxType
               }
             })
           }
@@ -164,8 +188,8 @@
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
                 'orderId': this.dataForm.orderId,
-                'companyId': this.dataForm.companyId,
-                'attenders': this.dataForm.attenders,
+                'attendersId': this.dataForm.attendersId,
+                'feeId': this.dataForm.feeId,
                 'payTime': this.dataForm.payTime,
                 'payType': this.dataForm.payType,
                 'payOption': this.dataForm.payOption,
@@ -175,8 +199,11 @@
                 'addrPhone': this.dataForm.addrPhone,
                 'bankAddrAccount': this.dataForm.bankAddrAccount,
                 'taxAddress': this.dataForm.taxAddress,
+                'isCheck': this.dataForm.isCheck,
                 'createTime': this.dataForm.createTime,
-                'isDel': this.dataForm.isDel
+                'isDel': this.dataForm.isDel,
+                'meetingId': this.dataForm.meetingId,
+                'taxType': this.dataForm.taxType
               })
             }).then(({data}) => {
               if (data && data.code === 0) {

@@ -32,19 +32,19 @@
         prop="orderId"
         header-align="center"
         align="center"
-        label="订单编号">
+        label="订单号">
       </el-table-column>
       <el-table-column
-        prop="companyId"
-        header-align="center"
-        align="center"
-        label="公司id">
-      </el-table-column>
-      <el-table-column
-        prop="attenders"
+        prop="attendersId"
         header-align="center"
         align="center"
         label="参会人员id">
+      </el-table-column>
+      <el-table-column
+        prop="feeId"
+        header-align="center"
+        align="center"
+        label="费用类型id">
       </el-table-column>
       <el-table-column
         prop="payTime"
@@ -101,6 +101,12 @@
         label="邮寄地址">
       </el-table-column>
       <el-table-column
+        prop="isCheck"
+        header-align="center"
+        align="center"
+        label="确认是否已缴费">
+      </el-table-column>
+      <el-table-column
         prop="createTime"
         header-align="center"
         align="center"
@@ -111,6 +117,18 @@
         header-align="center"
         align="center"
         label="是否被删除 状态  0：正常   1：删除">
+      </el-table-column>
+      <el-table-column
+        prop="meetingId"
+        header-align="center"
+        align="center"
+        label="会议id">
+      </el-table-column>
+      <el-table-column
+        prop="taxType"
+        header-align="center"
+        align="center"
+        label="发票类型0普1专">
       </el-table-column>
       <el-table-column
         fixed="right"
